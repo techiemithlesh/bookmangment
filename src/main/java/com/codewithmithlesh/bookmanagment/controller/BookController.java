@@ -8,22 +8,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Autowired
-private BookRepository bookRepository;
-
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
 
 
-    @PostMapping("add/books")
-    public function ResponseEntity<Book> addbooks(@RequestBody Book book){
+    @Autowired
+    private BookRepository bookRepository;
+
+    @PostMapping("/add")
+    public ResponseEntity<Book> addbooks(@RequestBody Book book){
 
         Book savedBook = bookRepository.save(book);
         return ResponseEntity.ok(savedBook);
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks(){
         return ResponseEntity.ok(bookRepository.findAll());
     }
