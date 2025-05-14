@@ -1,6 +1,8 @@
 package com.codewithmithlesh.bookmanagment.model;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.format.annotation.NumberFormat;
 
 @Entity
 @Table(name = "tbl_books")
@@ -10,8 +12,14 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
+
+    @NotBlank(message = "Title is required")
     private String title;
+
+    @NotBlank(message = "Author is required")
     private String author;
+
+    @Min(value = 1, message = "Pages must be at least 1")
     private int pages;
 
     public Book(){

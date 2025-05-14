@@ -1,10 +1,12 @@
 package com.codewithmithlesh.bookmanagment.controller;
 
+import com.codewithmithlesh.bookmanagment.dto.BookRequestDTO;
 import com.codewithmithlesh.bookmanagment.exception.ResourceNotFoundException;
 import com.codewithmithlesh.bookmanagment.model.Book;
 import com.codewithmithlesh.bookmanagment.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +21,10 @@ public class BookController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Book> addbooks(@RequestBody Book book){
+    public ResponseEntity<Book> addbooks(@Validated @RequestBody BookRequestDTO dto){
 
-        Book savedBook = bookRepository.save(book);
-        return ResponseEntity.ok(savedBook);
+        Book book = new Book(dto.getTitle(), dto.getAuthor(), dto.getPages());
+        return ResponseEntity.ok(bookService.saveBook(book));
     }
 
     @GetMapping("/all")
