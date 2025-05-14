@@ -1,5 +1,8 @@
 package com.codewithmithlesh.bookmanagment.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 public class BookRequestDTO {
 
     @NotBlank(message = "Title can not be blank !")

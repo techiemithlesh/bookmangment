@@ -4,10 +4,11 @@ import com.codewithmithlesh.bookmanagment.dto.BookRequestDTO;
 import com.codewithmithlesh.bookmanagment.exception.ResourceNotFoundException;
 import com.codewithmithlesh.bookmanagment.model.Book;
 import com.codewithmithlesh.bookmanagment.repository.BookRepository;
+import com.codewithmithlesh.bookmanagment.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -18,18 +19,17 @@ public class BookController {
 
     @Autowired
     private BookRepository bookRepository;
+    private BookService bookService;
 
 
     @PostMapping("/add")
-    public ResponseEntity<Book> addbooks(@Validated @RequestBody BookRequestDTO dto){
-
-        Book book = new Book(dto.getTitle(), dto.getAuthor(), dto.getPages());
-        return ResponseEntity.ok(bookService.saveBook(book));
+    public ResponseEntity<Book> addbooks(@Valid @RequestBody BookRequestDTO dto){
+        return ResponseEntity.ok(bookService.savedBook(dto));
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks(){
-        return ResponseEntity.ok(bookRepository.findAll());
+        return ResponseEntity.ok(bookService.getAllBook());
     }
 
     @GetMapping("/{id}")
@@ -42,27 +42,14 @@ public class BookController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Book> updateBookById(@PathVariable Long id, @RequestBody Book bookDetails){
-        Book existingBook = bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Book Not found with the given id" + id));
-
-        existingBook.setTitle(bookDetails.getTitle());
-        existingBook.setAuthor(bookDetails.getAuthor());
-        existingBook.setPages(bookDetails.getPages());
-
-        Book updatedBook = bookRepository.save(existingBook);
-
-        return ResponseEntity.ok(updatedBook);
+    public ResponseEntity<Book> updateBookById(@PathVariable Long id, @Valid @RequestBody BookRequestDTO dto){
+        return ResponseEntity.ok(bookService.updateBook(id, dto));
 
     }
 
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> deleteBookById(@PathVariable Long id){
-        Book exisitngBook = bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found for given id "));
-        bookRepository.deleteById(id);
-
-        return ResponseEntity.ok("Book with ID " + id + " deleted successfully.");
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return ResponseEntity.ok("Book deleted successfully.");
     }
 }
