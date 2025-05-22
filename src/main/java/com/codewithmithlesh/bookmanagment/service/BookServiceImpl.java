@@ -4,6 +4,10 @@ import com.codewithmithlesh.bookmanagment.dto.BookRequestDTO;
 import com.codewithmithlesh.bookmanagment.model.Book;
 import com.codewithmithlesh.bookmanagment.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +26,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAllBook() {
-        return bookRepository.findAll();
+    public Page<Book> getBooksPaged(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return bookRepository.findAll(pageable);
     }
+
+
 
     @Override
     public Book updateBook(Long id, BookRequestDTO dto) {
@@ -43,7 +51,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(Long id) {
         if (!bookRepository.existsById(id)) {
-            throw new RuntimeException("Cannot delete ! Book not found with ID: " + id);
+            throw new RuntimeException("Cannot delete. Book not found with ID: " + id);
         }
         bookRepository.deleteById(id);
     }

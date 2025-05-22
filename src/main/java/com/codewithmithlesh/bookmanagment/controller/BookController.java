@@ -28,8 +28,11 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Book>> getAllBooks(){
-        return ResponseEntity.ok(bookService.getAllBook());
+    public ResponseEntity<List<Book>> getBooksPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "title") String sortBy){
+        return ResponseEntity.ok((List<Book>) bookService.getBooksPaged(page, size, sortBy));
     }
 
     @GetMapping("/{id}")
