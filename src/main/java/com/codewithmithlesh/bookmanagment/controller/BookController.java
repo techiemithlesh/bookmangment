@@ -6,6 +6,7 @@ import com.codewithmithlesh.bookmanagment.model.Book;
 import com.codewithmithlesh.bookmanagment.repository.BookRepository;
 import com.codewithmithlesh.bookmanagment.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ public class BookController {
 
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
     private BookService bookService;
 
 
@@ -28,11 +30,17 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Book>> getBooksPaged(
+    public ResponseEntity<List<Book>> getAllBook(){
+        return ResponseEntity.ok(bookService.getAllBooks());
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<Page<Book>> getBooksPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "title") String sortBy){
-        return ResponseEntity.ok((List<Book>) bookService.getBooksPaged(page, size, sortBy));
+            @RequestParam(defaultValue = "title") String sortBy) {
+
+        return ResponseEntity.ok(bookService.getBooksPaged(page, size, sortBy));
     }
 
     @GetMapping("/{id}")
