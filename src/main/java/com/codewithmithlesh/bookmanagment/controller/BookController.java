@@ -23,8 +23,8 @@ public class BookController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Book> addbooks(@Valid @RequestBody BookRequestDTO dto){
-        return ResponseEntity.ok(bookService.savedBook(dto));
+    public ResponseEntity<Book> addBook(@Valid @RequestBody BookRequestDTO dto) {
+        return ResponseEntity.ok(bookService.saveBook(dto));
     }
 
     @GetMapping("/all")

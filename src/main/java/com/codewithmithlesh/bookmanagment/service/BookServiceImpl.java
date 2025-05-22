@@ -20,7 +20,7 @@ public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
 
     @Override
-    public Book savedBook(BookRequestDTO dto) {
+    public Book saveBook(BookRequestDTO dto) {
         Book book = new Book(dto.getTitle(), dto.getAuthor(), dto.getPages());
         return bookRepository.save(book);
     }
