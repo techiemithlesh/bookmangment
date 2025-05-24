@@ -5,13 +5,12 @@ import com.codewithmithlesh.bookmanagment.exception.ResourceNotFoundException;
 import com.codewithmithlesh.bookmanagment.model.Book;
 import com.codewithmithlesh.bookmanagment.repository.BookRepository;
 import com.codewithmithlesh.bookmanagment.service.BookService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import com.codewithmithlesh.bookmanagment.payload.ApiResponse;
 
 import java.util.List;
 
@@ -26,8 +25,7 @@ public class BookController {
     private BookService bookService;
 
 
-    @Operation(summary = "Add a new book", description = "Adds a new book to the collection")
-    @ApiResponse(responseCode = "200", description = "Book added successfully")
+
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(@Valid @RequestBody BookRequestDTO dto) {
         return ResponseEntity.ok(bookService.saveBook(dto));
@@ -45,6 +43,15 @@ public class BookController {
             @RequestParam(defaultValue = "title") String sortBy) {
 
         return ResponseEntity.ok(bookService.getBooksPaged(page, size, sortBy));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<ApiResponse<List<Book>>> filterBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author) {
+
+        List<Book> filterBooks = bookService.filterBooks(title, author);
+        return ResponseEntity.ok(new com.codewithmithlesh.bookmanagment.payload.ApiResponse<>("success", filterBooks, filterBooks.size()));
     }
 
     @GetMapping("/{id}")

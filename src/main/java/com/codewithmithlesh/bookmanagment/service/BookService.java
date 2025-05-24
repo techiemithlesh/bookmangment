@@ -10,6 +10,7 @@ public interface BookService {
     Book saveBook (BookRequestDTO dto);
     List<Book> getAllBooks();
     Page<Book> getBooksPaged(int page, int size, String sortBy);
+    List<Book> filterBooks(String title, String author);
     Book updateBook(Long id, BookRequestDTO dto);
     void deleteBook(Long id);
 }

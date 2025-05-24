@@ -37,7 +37,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(pageable);
     }
 
-
+    @Override
+    public List<Book> filterBooks(String title, String author){
+        return bookRepository.filterBooks(title, author);
+    }
 
     @Override
     public Book updateBook(Long id, BookRequestDTO dto) {
