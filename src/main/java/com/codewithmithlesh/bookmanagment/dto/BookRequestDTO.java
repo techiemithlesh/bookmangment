@@ -38,5 +38,10 @@ public class BookRequestDTO {
         this.pages = pages;
     }
 
+    public BookRequestDTO(String title, String author, int pages) {
+        this.title = title;
+        this.Author = author;
+        this.pages = pages;
+    }
 
 }
