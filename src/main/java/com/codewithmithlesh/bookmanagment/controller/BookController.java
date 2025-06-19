@@ -24,8 +24,6 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-
-
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(@Valid @RequestBody BookRequestDTO dto) {
         return ResponseEntity.ok(bookService.saveBook(dto));
